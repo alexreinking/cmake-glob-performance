@@ -18,10 +18,20 @@ EOF
 $ mkdir src
 $ echo "int main() { return 0; }" > src/main.cpp
 $ touch src/src_{1..1023}.cpp
+$ tree src/ | tail -n 1
+0 directories, 1024 files
 $ cmake -G Ninja -S . -B build
 ...
 $ cmake --build build
 ...
 $ time cmake --build build  # no-op, just measuring glob check
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+
+real    0m0.019s
+user    0m0.014s
+sys     0m0.004s
 ```
 
+The times were gathered on WSL on the virtual ext4 disk, on a Samsung 970
+EVO 1TB (itself formatted NTFS).
