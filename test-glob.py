@@ -67,8 +67,11 @@ def main():
     source = create_testcase(n=1024)
     build = Path('./build')
 
+    default_generator = ('Visual Studio 16 2019' if os.name == 'nt'
+                         else 'Ninja')
+
     shutil.rmtree(build)
-    overhead = test_overhead(source, build)
+    overhead = test_overhead(source, build, default_generator)
 
     print(f'Overhead was: {overhead} seconds')
 
