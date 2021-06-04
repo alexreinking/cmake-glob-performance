@@ -1,0 +1,19 @@
+name: Test
+on: [ 'push' ]
+jobs:
+  test:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest, macos-latest, ubuntu-latest ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - uses: ilammy/msvc-dev-cmd@v1
+      - uses: seanmiddleditch/gha-setup-ninja@856654e80dd21909aec244cd01bb96e5c841d64f
+      - uses: jwlawson/actions-setup-cmake@v1.8
+        with:
+          cmake-version: 3.x
+      - run: python3 test-glob.py
