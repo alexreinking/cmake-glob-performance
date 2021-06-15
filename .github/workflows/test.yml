@@ -16,4 +16,4 @@ jobs:
       - uses: jwlawson/actions-setup-cmake@v1.8
         with:
           cmake-version: 3.x
-      - run: python3 test-glob.py
+      - run: python3 test-glob.py -n 1000

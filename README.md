@@ -26,11 +26,16 @@ optional arguments:
 See the GitHub Actions logs for some performance numbers. Below is a table
 with some experiments I ran locally.
 
-| GitHub User   | Disk             | Filesystem | OS               | Generator | N      | Time (s) |
-| ------------- | ---------------- | ---------- | ---------------- | --------- | ------ | -------- |
-| @alexreinking | SanDisk SDSSDHII | EXT4       | Ubuntu 20.04 LTS | Ninja     | 1000   | 0.0162   |
-| @alexreinking | SanDisk SDSSDHII | EXT4       | Ubuntu 20.04 LTS | Ninja     | 10000  | 0.0594   |
-| @alexreinking | SanDisk SDSSDHII | EXT4       | Ubuntu 20.04 LTS | Ninja     | 100000 | 0.4383   |
+| GitHub User   | Disk                | Filesystem | OS               | Generator | N      | Time (s) |
+| ------------- | ------------------- | ---------- | ---------------- | --------- | ------ | -------- |
+| @alexreinking | SanDisk SDSSDHII    | ext4       | Ubuntu 20.04 LTS | Ninja     | 1000   | 0.0162   |
+| @alexreinking | SanDisk SDSSDHII    | ext4       | Ubuntu 20.04 LTS | Ninja     | 10000  | 0.0594   |
+| @alexreinking | SanDisk SDSSDHII    | ext4       | Ubuntu 20.04 LTS | Ninja     | 100000 | 0.4383   |
+| @alexreinking | SanDisk SDSSDHII    | NTFS (3g)  | Ubuntu 20.04 LTS | Ninja     | 1000   | 0.1170   |
+| @alexreinking | SanDisk SDSSDHII    | NTFS (3g)  | Ubuntu 20.04 LTS | Ninja     | 10000  | 1.1119   |
+| @alexreinking | Samsung SSD 970 EVO | NTFS (3g)  | Ubuntu 20.04 LTS | Ninja     | 1000   | 0.1146   |
+| @alexreinking | Samsung SSD 970 EVO | NTFS (3g)  | Ubuntu 20.04 LTS | Ninja     | 10000  | 1.4825   |
 
-Open an issue with your own tests and reports and I'll add it to the table!
+
+Open an issue with your own tests and reports and I'll add them to the table!
 
