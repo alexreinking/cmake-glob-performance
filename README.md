@@ -1,37 +1,36 @@
 # CMake Glob Performance
 
-This is a Python script for testing a few 1024-file-and-directory
-scenarios for globbing to determine the overhead in a no-op build
-setting.
+This is a Python script for testing CMake glob overhead on an N
+file flat directory. It does the following:
 
-If you don't want to bother with Python (and are running Linux),
-the default experiment is basically this:
+1. Creates a CMake project with N sources, explicitly listed
+2. Builds that project
+3. Runs a no-op build on that project, records time spent
+4. Repeats the above steps with a `CONFIGURE_DEPENDS` glob in
+   place of the explicit list
+5. Reports the difference
 
 ```shell
-$ cat >CMakeLists.txt <<EOF
-cmake_minimum_required(VERSION 3.20)
-project(test-glob)
+usage: test-glob.py [-h] [--generator GEN] [--source SOURCE] [--build BUILD] [-n N]
 
-file(GLOB sources CONFIGURE_DEPENDS "src/*.cpp")
-add_executable(main ${sources})
-EOF
-$ mkdir src
-$ echo "int main() { return 0; }" > src/main.cpp
-$ touch src/src_{1..1023}.cpp
-$ tree src/ | tail -n 1
-0 directories, 1024 files
-$ cmake -G Ninja -S . -B build
-...
-$ cmake --build build
-...
-$ time cmake --build build  # no-op, just measuring glob check
-[0/2] Re-checking globbed directories...
-ninja: no work to do.
+Test CMake glob performance
 
-real    0m0.019s
-user    0m0.014s
-sys     0m0.004s
+optional arguments:
+  -h, --help       show this help message and exit
+  --generator GEN  the CMake generator to use (e.g. Ninja)
+  --source SOURCE  directory in which to place the test case
+  --build BUILD    directory in which to build the test case
+  -n N             number of files to create
 ```
 
-The times were gathered on WSL on the virtual ext4 disk, on a Samsung 970
-EVO 1TB (itself formatted NTFS).
+See the GitHub Actions logs for some performance numbers. Below is a table
+with some experiments I ran locally.
+
+| GitHub User   | Disk             | Filesystem | OS               | Generator | N      | Time (s) |
+| ------------- | ---------------- | ---------- | ---------------- | --------- | ------ | -------- |
+| @alexreinking | SanDisk SDSSDHII | EXT4       | Ubuntu 20.04 LTS | Ninja     | 1000   | 0.0162   |
+| @alexreinking | SanDisk SDSSDHII | EXT4       | Ubuntu 20.04 LTS | Ninja     | 10000  | 0.0594   |
+| @alexreinking | SanDisk SDSSDHII | EXT4       | Ubuntu 20.04 LTS | Ninja     | 100000 | 0.4383   |
+
+Open an issue with your own tests and reports and I'll add it to the table!
+
