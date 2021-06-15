@@ -19,27 +19,33 @@ def chdir(path):
         os.chdir(prev)
 
 
+def create_sources(n):
+    Path('src').mkdir()
+
+    sources = [Path('src/main.cpp')]
+
+    sources[0].write_text(dedent(
+	    '''
+        int main () {
+            return 0;
+        }
+        '''
+    ).lstrip())
+
+    for i in range(1, n):
+        p = Path(f'src/src{i}.cpp')
+        p.touch()
+        sources.append(p)
+
+    return sources
+
+
 def create_testcase(source, *, n=1024, depth=1, use_globs=True):
     assert depth == 1, "Not implemented"
 
     source.mkdir()
     with chdir(source):
-        Path('src').mkdir()
-
-        sources = [Path('src/main.cpp')]
-
-        sources[0].write_text(dedent(
-            '''
-            int main () {
-                return 0;
-            }
-            '''
-        ).lstrip())
-
-        for i in range(1, n):
-            p = Path(f'src/src{i}.cpp')
-            p.touch()
-            sources.append(p)
+        sources = create_sources(n)
 
         if use_globs:
             sources_list = 'file(GLOB_RECURSE sources CONFIGURE_DEPENDS "src/**.cpp")'
